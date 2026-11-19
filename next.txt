@@ -1,4 +1,3 @@
-Welcome to your new Nuxt 4 project (`nuxt-website-lab`)!
 
 While `vue-component-lab` was a Vue 3 SPA boilerplate for internal admin systems, this new repo will become a reusable **Nuxt 4 Website & SEO Boilerplate** for public company websites, landing pages, service catalogs, and blogs.
 
@@ -8,7 +7,6 @@ Before writing code, notice how Nuxt 4 is different from plain Vue + Vite:
 - Components, composables, and Vue APIs (`ref`, `computed`, `useRoute`, `useSeoMeta`) are **auto-imported** by Nuxt.
 - Public environment variables start with `NUXT_PUBLIC_` (configured in `nuxt.config.ts` via `runtimeConfig`) instead of `VITE_`.
 
-Here is your Milestone 1 task:
 
 1. Configure Styling, Runtime Config, and Central Site Config
 - Set up clean modern styling for a public marketing website (install Tailwind CSS or Bootstrap — Tailwind CSS is strongly recommended for marketing websites).
@@ -30,3 +28,4 @@ Create the following pages inside `app/pages/` using file-based routing, and set
 
 4. Create a Custom Branded Error Page (`app/error.vue`)
 - Build `app/error.vue` so visiting a non-existent URL like `/does-not-exist` displays a clean branded `404` page with a button that uses Nuxt's `clearError({ redirect: '/' })` to safely return home.
+
