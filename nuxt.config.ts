@@ -1,5 +1,39 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// nuxt.config.ts
+import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true }
+  devtools: { enabled: true },
+
+  css: ['~/assets/css/main.css'],
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
+  runtimeConfig: {
+    public: {
+      siteName: 'Acme Digital',
+      siteUrl: 'http://localhost:3000',
+      apiBase: '/api',
+    },
+  },
+
+  app: {
+    head: {
+      titleTemplate: '%s | Acme Digital',
+      title: 'Home',
+      htmlAttrs: {
+        lang: 'en',
+      },
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        {
+          name: 'description',
+          content: 'Modern web solutions and digital strategy built to scale your business.',
+        },
+      ],
+    },
+  },
 })

@@ -1,0 +1,19 @@
+/* app/assets/css/main.css */
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #ffffff;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 200ms, color 200ms;
+  }
+
+  html.dark {
+    background-color: #020617;
+    color: #f8fafc;
+  }
+}
