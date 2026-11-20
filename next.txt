@@ -1,31 +1,28 @@
 
-While `vue-component-lab` was a Vue 3 SPA boilerplate for internal admin systems, this new repo will become a reusable **Nuxt 4 Website & SEO Boilerplate** for public company websites, landing pages, service catalogs, and blogs.
+1. Default layout is not rendering on any page
+- Run `npm run dev` and open `/` and `/about` in the browser — the sticky header navbar, mobile hamburger menu, dark/light toggle, and footer you built are not showing up at all.
+- Check why Nuxt is ignoring your default layout, fix it, and actually test every piece in the browser:
+  - Sticky navbar + active route highlight across all pages.
+  - Mobile drawer opens, closes, and auto-closes after navigating to another page.
+  - Dark / Light toggle works and refreshing the browser shows zero hydration mismatch warnings in DevTools Console.
 
-Before writing code, notice how Nuxt 4 is different from plain Vue + Vite:
-- Frontend files live inside the `app/` folder (`app/pages/`, `app/components/`, `app/layouts/`, `app/composables/`, `app/app.vue`).
-- Nuxt uses **file-based routing** (creating `app/pages/about.vue` automatically creates `/about` — you do NOT write a `router/index.js` file!).
-- Components, composables, and Vue APIs (`ref`, `computed`, `useRoute`, `useSeoMeta`) are **auto-imported** by Nuxt.
-- Public environment variables start with `NUXT_PUBLIC_` (configured in `nuxt.config.ts` via `runtimeConfig`) instead of `VITE_`.
+2. Fix three issues on the custom 404 error page
+Visit a broken URL like `/does-not-exist` directly in the browser and inspect it carefully:
+- Duplicate brand name in `<title>`: Check the browser tab title (or View Page Source) on `/does-not-exist` — the site name appears twice. Track down why it is doubling up and fix it.
+- Exiting the error state on every link: Don't only test "Back to Home" — click the other navigation links/buttons on the error page too. Make sure every navigation action from the error screen properly clears Nuxt's error state instead of leaving it active.
+- Dark Mode on direct 404 loads: Switch to Dark Mode on the Home page, then type `/does-not-exist` directly into the address bar (full reload). Notice the saved dark theme isn't applied before render on the error page. Figure out why your theme init logic doesn't execute when Nuxt renders the error page directly, and move it so Dark Mode persists cleanly on both normal pages and error pages.
+- Also check what property Nuxt actually puts on the error object for the requested path (inspect the 404 payload/response) instead of guessing a field that isn't there.
 
+3. Make the brand name flow from one consistent source
+- Copy `.env.example` to a local `.env` (keep `.env` git-ignored), temporarily change `NUXT_PUBLIC_SITE_NAME` to a different company name, and restart the dev server.
+- Inspect the navbar, browser tab `<title>`, hero section, About page, Services/Blog/Contact headings, and `<meta property="og:title">` in View Page Source — right now some places update and others still show `"Acme Digital"`.
+- Make sure changing the site name updates the layout, pages, `<title>`, and SEO meta tags consistently everywhere.
+- Check your site config for unused or broken references (for example, any configured asset path that doesn't exist in `public/` or isn't rendered) and either wire them up or clean them up.
 
-1. Configure Styling, Runtime Config, and Central Site Config
-- Set up clean modern styling for a public marketing website (install Tailwind CSS or Bootstrap — Tailwind CSS is strongly recommended for marketing websites).
-- Configure `runtimeConfig.public` in `nuxt.config.ts` to read `NUXT_PUBLIC_SITE_NAME`, `NUXT_PUBLIC_SITE_URL`, and `NUXT_PUBLIC_API_BASE` (see `.env.example`), plus a default HTML head `<title>` template and meta description.
-- Create a single site configuration file (`app/config/site.ts`) that holds the brand name, tagline, main navigation links (`Home`, `Services`, `Blog`, `About`, `Contact`), footer links, contact details, and social links so spinning up a new client website only requires editing one file.
-
-2. Build the Website Layout Shell (`app/layouts/default.vue`) & Root `app/app.vue`
-- Update `app/app.vue` to render `<NuxtLayout><NuxtPage /></NuxtLayout>` (replacing `<NuxtWelcome />`).
-- Create `app/layouts/default.vue` with:
-  - A sticky, responsive top **Header Navbar** reading links from `app/config/site.ts`, highlighting the active route, with a working mobile hamburger menu drawer on small screens and a **Dark / Light theme toggle** (make sure it works cleanly with SSR without causing hydration mismatch errors!).
-  - A clean multi-column **Footer** reading company info, quick links, and copyright year from `app/config/site.ts`.
-
-3. Build the Initial Pages with Dynamic SEO Metadata (`useSeoMeta`)
-Create the following pages inside `app/pages/` using file-based routing, and set unique SEO metadata (`title`, `description`, `ogTitle`, `ogDescription`) on every page using `useSeoMeta()`:
-- **Home (`/`):** Clean Hero section (headline, subtitle, primary & secondary CTA buttons), Services/Features overview grid (3–6 cards), Key Stats or Trust section, Testimonials section, and a Call-To-Action banner linking to `/contact`.
-- **About (`/about`):** Company story, mission/values cards, and team grid.
-- **Services (`/services`) & Blog (`/blog`):** Starter listing pages (we will connect them to Nitro `server/api/` endpoints and dynamic `[slug]` pages in Milestone 2).
-- **Contact (`/contact`):** Contact details + a styled inquiry form (Name, Email, Subject, Message) with client-side validation.
-
-4. Create a Custom Branded Error Page (`app/error.vue`)
-- Build `app/error.vue` so visiting a non-existent URL like `/does-not-exist` displays a clean branded `404` page with a button that uses Nuxt's `clearError({ redirect: '/' })` to safely return home.
-
+4. Verify before pushing (and be ready to explain)
+- Run `npm run build` and confirm it passes with 0 errors.
+- Check View Page Source (or `curl`) on `/about` and `/does-not-exist` yourself to confirm SSR HTML, `<title>`, and `<meta>` tags look right.
+- In your commit message, briefly explain in your own words (1-2 sentences each):
+  1. Why the layout wasn't rendering originally.
+  2. Why Dark Mode wasn't running on a direct 404 load.
+  3. Why normal links inside the error page need to handle navigation differently from regular pages.
