@@ -1,12 +1,13 @@
 <!-- app/pages/index.vue -->
 <script setup lang="ts">
-import { siteConfig } from '~/config/site'
+const site = useSite()
+const { siteName } = site
 
 useSeoMeta({
   title: 'Home',
-  description: siteConfig.brand.description,
-  ogTitle: `${siteConfig.brand.name} — ${siteConfig.brand.tagline}`,
-  ogDescription: siteConfig.brand.description,
+  description: site.brand.description,
+  ogTitle: () => `${siteName.value} — ${site.brand.tagline}`,
+  ogDescription: site.brand.description,
 })
 
 const features = [
@@ -80,15 +81,15 @@ const testimonials = [
           <span
             class="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3.5 py-1 text-xs font-semibold text-indigo-700 dark:border-indigo-800/70 dark:bg-indigo-950/60 dark:text-indigo-300"
           >
-            {{ siteConfig.brand.name }} · {{ siteConfig.contact.address }}
+            {{ siteName }} · {{ site.contact.address }}
           </span>
 
           <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white">
-            {{ siteConfig.brand.tagline }}
+            {{ site.brand.tagline }}
           </h1>
 
           <p class="mt-6 text-lg leading-relaxed text-slate-600 sm:text-xl dark:text-slate-300">
-            {{ siteConfig.brand.description }}
+            {{ site.brand.description }}
           </p>
 
           <div class="mt-9 flex flex-col items-center justify-center gap-3.5 sm:flex-row">

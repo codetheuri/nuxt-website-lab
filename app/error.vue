@@ -1,55 +1,63 @@
 <!-- app/error.vue -->
 <script setup lang="ts">
 import type { NuxtError } from '#app'
-import { siteConfig } from '~/config/site'
 
 const props = defineProps<{
   error: NuxtError
 }>()
 
-const config = useRuntimeConfig()
 const route = useRoute()
-const brandName = computed<string>(() => String(config.public.siteName || siteConfig.brand.name))
+const site = useSite()
+
+const brandName = site.siteName
 const currentYear = new Date().getFullYear()
 
-const isNotFound = computed(() => props.error.statusCode === 404)
+const statusCode = computed(() => props.error.statusCode || 500)
+const isNotFound = computed(() => statusCode.value === 404)
 
-const requestedPath = computed(() => {
-  const data = props.error.data as { url?: string } | undefined
-  return data?.url || route.fullPath || ''
+const pageTitleChunk = computed(() => {
+  return isNotFound.value ? `${statusCode.value} - Page Not Found` : `${statusCode.value} - Error`
 })
 
 const heading = computed(() => {
   if (isNotFound.value) return 'Page not found'
-  return props.error.statusCode ? `Error ${props.error.statusCode}` : 'Something went wrong'
+  return `Error ${statusCode.value}`
 })
 
 const description = computed(() => {
   if (isNotFound.value) {
-    return "The route you're looking for doesn't exist or may have moved. Head back home or jump straight into our services."
+    return "That route isn't here or may have been moved. Jump back home, check out our services, or reach out."
   }
-  return props.error.message || 'An unexpected error occurred while loading this page.'
+  return props.error.statusMessage || props.error.message || 'An unexpected error occurred while loading this page.'
+})
+
+// NuxtError does not expose a top-level `url` property; resolve from `error.data.url` or `route.fullPath`
+const requestedPath = computed<string>(() => {
+  const data = props.error.data as { url?: string } | undefined
+  return data?.url || route.fullPath || ''
 })
 
 useSeoMeta({
-  title: computed(() => `${props.error.statusCode || 'Error'} | ${brandName.value}`),
-  description: computed(() => description.value),
+  title: pageTitleChunk,
+  description,
 })
 
-function handleReturnHome() {
-  clearError({ redirect: '/' })
+function navigateAndClear(redirectTo: string) {
+  return clearError({ redirect: redirectTo })
 }
 </script>
 
 <template>
   <div class="flex min-h-screen flex-col bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
     <!-- Minimal Branded Top Bar -->
-    <header class="border-b border-slate-200/80 bg-white/85 backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-950/85">
+    <header
+      class="border-b border-slate-200/80 bg-white/85 backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-950/85"
+    >
       <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <button
           type="button"
           class="flex items-center gap-2.5 font-bold tracking-tight text-slate-900 dark:text-white"
-          @click="handleReturnHome"
+          @click="navigateAndClear('/')"
         >
           <span
             class="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-sm font-extrabold text-white shadow-sm"
@@ -59,12 +67,13 @@ function handleReturnHome() {
           <span class="text-lg">{{ brandName }}</span>
         </button>
 
-        <NuxtLink
-          to="/contact"
+        <button
+          type="button"
           class="rounded-lg border border-slate-200 px-3.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-900"
+          @click="navigateAndClear('/contact')"
         >
           Contact Support
-        </NuxtLink>
+        </button>
       </div>
     </header>
 
@@ -74,7 +83,7 @@ function handleReturnHome() {
         <p
           class="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3.5 py-1 text-xs font-bold tracking-wider text-indigo-700 uppercase dark:border-indigo-800/70 dark:bg-indigo-950/60 dark:text-indigo-300"
         >
-          {{ error.statusCode || 500 }} Error
+          {{ statusCode }} Error
         </p>
 
         <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl dark:text-white">
@@ -96,23 +105,26 @@ function handleReturnHome() {
           <button
             type="button"
             class="w-full rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 sm:w-auto"
-            @click="handleReturnHome"
+            @click="navigateAndClear('/')"
           >
             Back to Home
           </button>
 
-          <NuxtLink
-            to="/services"
+          <button
+            type="button"
             class="w-full rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 sm:w-auto dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            @click="navigateAndClear('/services')"
           >
             View Services
-          </NuxtLink>
+          </button>
         </div>
       </div>
     </main>
 
     <!-- Minimal Footer -->
-    <footer class="border-t border-slate-200 py-6 text-center text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">
+    <footer
+      class="border-t border-slate-200 py-6 text-center text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400"
+    >
       &copy; {{ currentYear }} {{ brandName }}. All rights reserved.
     </footer>
   </div>

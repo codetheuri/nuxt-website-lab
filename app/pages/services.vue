@@ -1,12 +1,12 @@
 <!-- app/pages/services.vue -->
 <script setup lang="ts">
-import { siteConfig } from '~/config/site'
+const { siteName } = useSite()
 
 useSeoMeta({
   title: 'Services',
-  description: `Explore web engineering, UI/UX design, backend APIs, and technical consulting from ${siteConfig.brand.name}.`,
-  ogTitle: `Services | ${siteConfig.brand.name}`,
-  ogDescription: `Explore web engineering, UI/UX design, backend APIs, and technical consulting from ${siteConfig.brand.name}.`,
+  description: () => `Explore web engineering, UI/UX design, backend APIs, and technical consulting from ${siteName.value}.`,
+  ogTitle: () => `Services | ${siteName.value}`,
+  ogDescription: () => `Explore web engineering, UI/UX design, backend APIs, and technical consulting from ${siteName.value}.`,
 })
 
 interface ServiceItem {

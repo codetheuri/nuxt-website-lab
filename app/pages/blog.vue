@@ -1,12 +1,12 @@
 <!-- app/pages/blog.vue -->
 <script setup lang="ts">
-import { siteConfig } from '~/config/site'
+const { siteName } = useSite()
 
 useSeoMeta({
   title: 'Blog',
-  description: `Articles, engineering notes, and product insights from ${siteConfig.brand.name}.`,
-  ogTitle: `Blog | ${siteConfig.brand.name}`,
-  ogDescription: `Articles, engineering notes, and product insights from ${siteConfig.brand.name}.`,
+  description: () => `Articles, engineering notes, and product insights from ${siteName.value}.`,
+  ogTitle: () => `Blog | ${siteName.value}`,
+  ogDescription: () => `Articles, engineering notes, and product insights from ${siteName.value}.`,
 })
 
 interface PostItem {

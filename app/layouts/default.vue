@@ -1,11 +1,9 @@
 <!-- app/layouts/default.vue -->
 <script setup lang="ts">
-import { siteConfig } from '~/config/site'
-
-const config = useRuntimeConfig()
 const route = useRoute()
+const site = useSite()
 
-const brandName = computed<string>(() => String(config.public.siteName || siteConfig.brand.name))
+const brandName = site.siteName
 const currentYear = new Date().getFullYear()
 
 // Mobile menu drawer state
@@ -63,7 +61,7 @@ function isActiveRoute(path: string): boolean {
         <!-- Desktop Navigation Links -->
         <nav class="hidden items-center gap-1 md:flex" aria-label="Main Navigation">
           <NuxtLink
-            v-for="item in siteConfig.nav"
+            v-for="item in site.nav"
             :key="item.to"
             :to="item.to"
             class="rounded-lg px-3.5 py-2 text-sm font-medium transition-colors"
@@ -171,7 +169,7 @@ function isActiveRoute(path: string): boolean {
       >
         <nav class="flex flex-col space-y-1" aria-label="Mobile Navigation">
           <NuxtLink
-            v-for="item in siteConfig.nav"
+            v-for="item in site.nav"
             :key="item.to"
             :to="item.to"
             class="rounded-lg px-3 py-2.5 text-base font-medium transition-colors"
@@ -215,17 +213,17 @@ function isActiveRoute(path: string): boolean {
               <span class="text-lg">{{ brandName }}</span>
             </NuxtLink>
             <p class="mt-4 max-w-sm text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-              {{ siteConfig.brand.description }}
+              {{ site.brand.description }}
             </p>
             <div class="mt-5 space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
-              <p>{{ siteConfig.contact.address }}</p>
+              <p>{{ site.contact.address }}</p>
               <p>
-                <a :href="`mailto:${siteConfig.contact.email}`" class="hover:text-indigo-600 dark:hover:text-indigo-400">
-                  {{ siteConfig.contact.email }}
+                <a :href="`mailto:${site.contact.email}`" class="hover:text-indigo-600 dark:hover:text-indigo-400">
+                  {{ site.contact.email }}
                 </a>
                 ·
-                <a :href="`tel:${siteConfig.contact.phone}`" class="hover:text-indigo-600 dark:hover:text-indigo-400">
-                  {{ siteConfig.contact.phone }}
+                <a :href="`tel:${site.contact.phone}`" class="hover:text-indigo-600 dark:hover:text-indigo-400">
+                  {{ site.contact.phone }}
                 </a>
               </p>
             </div>
@@ -237,7 +235,7 @@ function isActiveRoute(path: string): boolean {
               Company
             </h3>
             <ul class="mt-4 space-y-2.5">
-              <li v-for="link in siteConfig.footer.company" :key="link.to">
+              <li v-for="link in site.footer.company" :key="link.to">
                 <NuxtLink
                   :to="link.to"
                   class="text-sm text-slate-600 transition hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
@@ -254,7 +252,7 @@ function isActiveRoute(path: string): boolean {
               Resources
             </h3>
             <ul class="mt-4 space-y-2.5">
-              <li v-for="link in siteConfig.footer.resources" :key="link.label">
+              <li v-for="link in site.footer.resources" :key="link.label">
                 <NuxtLink
                   :to="link.to"
                   class="text-sm text-slate-600 transition hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
@@ -271,7 +269,7 @@ function isActiveRoute(path: string): boolean {
               Legal & Connect
             </h3>
             <ul class="mt-4 space-y-2.5">
-              <li v-for="link in siteConfig.footer.legal" :key="link.to">
+              <li v-for="link in site.footer.legal" :key="link.to">
                 <NuxtLink
                   :to="link.to"
                   class="text-sm text-slate-600 transition hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
@@ -283,7 +281,7 @@ function isActiveRoute(path: string): boolean {
 
             <div class="mt-6 flex flex-wrap gap-3">
               <a
-                v-for="social in siteConfig.socials"
+                v-for="social in site.socials"
                 :key="social.name"
                 :href="social.url"
                 target="_blank"
@@ -301,7 +299,7 @@ function isActiveRoute(path: string): boolean {
           class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-8 text-xs text-slate-500 sm:flex-row dark:border-slate-800 dark:text-slate-400"
         >
           <p>&copy; {{ currentYear }} {{ brandName }}. All rights reserved.</p>
-          <p>{{ siteConfig.contact.hours }}</p>
+          <p>{{ site.contact.hours }}</p>
         </div>
       </div>
     </footer>

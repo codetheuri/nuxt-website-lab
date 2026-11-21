@@ -1,12 +1,13 @@
 <!-- app/pages/about.vue -->
 <script setup lang="ts">
-import { siteConfig } from '~/config/site'
+const site = useSite()
+const { siteName } = site
 
 useSeoMeta({
   title: 'About Us',
-  description: `Learn about ${siteConfig.brand.name}, our story, core values, and the team behind our work.`,
-  ogTitle: `About ${siteConfig.brand.name}`,
-  ogDescription: `Learn about ${siteConfig.brand.name}, our story, core values, and the team behind our work.`,
+  description: () => `Learn about ${siteName.value}, our story, core values, and the team behind our work.`,
+  ogTitle: () => `About ${siteName.value}`,
+  ogDescription: () => `Learn about ${siteName.value}, our story, core values, and the team behind our work.`,
 })
 
 const values = [
@@ -52,13 +53,13 @@ const team = [
       <!-- Story Header -->
       <div class="max-w-3xl">
         <p class="text-sm font-semibold tracking-wider text-indigo-600 uppercase dark:text-indigo-400">
-          About {{ siteConfig.brand.name }}
+          About {{ siteName }}
         </p>
         <h1 class="mt-2 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl dark:text-white">
           Built to help ambitious teams ship better software
         </h1>
         <p class="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
-          {{ siteConfig.brand.name }} started with a straightforward goal: bridge the gap between polished digital
+          {{ siteName }} started with a straightforward goal: bridge the gap between polished digital
           presence and dependable software engineering. Whether launching a brand-new marketing site or untangling a
           core workflow, we focus on practical execution that lasts.
         </p>

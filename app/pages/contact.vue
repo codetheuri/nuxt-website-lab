@@ -1,12 +1,13 @@
 <!-- app/pages/contact.vue -->
 <script setup lang="ts">
-import { siteConfig } from '~/config/site'
+const site = useSite()
+const { siteName } = site
 
 useSeoMeta({
   title: 'Contact',
-  description: `Get in touch with ${siteConfig.brand.name} for web development, design, and project inquiries.`,
-  ogTitle: `Contact ${siteConfig.brand.name}`,
-  ogDescription: `Get in touch with ${siteConfig.brand.name} for web development, design, and project inquiries.`,
+  description: () => `Get in touch with ${siteName.value} for web development, design, and project inquiries.`,
+  ogTitle: () => `Contact ${siteName.value}`,
+  ogDescription: () => `Get in touch with ${siteName.value} for web development, design, and project inquiries.`,
 })
 
 const route = useRoute()
@@ -107,26 +108,26 @@ async function handleSubmit() {
               <div>
                 <dt class="font-medium text-slate-500 dark:text-slate-400">Email</dt>
                 <dd class="mt-1 font-semibold text-slate-900 dark:text-white">
-                  <a :href="`mailto:${siteConfig.contact.email}`" class="hover:text-indigo-600 dark:hover:text-indigo-400">
-                    {{ siteConfig.contact.email }}
+                  <a :href="`mailto:${site.contact.email}`" class="hover:text-indigo-600 dark:hover:text-indigo-400">
+                    {{ site.contact.email }}
                   </a>
                 </dd>
               </div>
               <div>
                 <dt class="font-medium text-slate-500 dark:text-slate-400">Phone</dt>
                 <dd class="mt-1 font-semibold text-slate-900 dark:text-white">
-                  <a :href="`tel:${siteConfig.contact.phone}`" class="hover:text-indigo-600 dark:hover:text-indigo-400">
-                    {{ siteConfig.contact.phone }}
+                  <a :href="`tel:${site.contact.phone}`" class="hover:text-indigo-600 dark:hover:text-indigo-400">
+                    {{ site.contact.phone }}
                   </a>
                 </dd>
               </div>
               <div>
                 <dt class="font-medium text-slate-500 dark:text-slate-400">Location</dt>
-                <dd class="mt-1 text-slate-700 dark:text-slate-300">{{ siteConfig.contact.address }}</dd>
+                <dd class="mt-1 text-slate-700 dark:text-slate-300">{{ site.contact.address }}</dd>
               </div>
               <div>
                 <dt class="font-medium text-slate-500 dark:text-slate-400">Business Hours</dt>
-                <dd class="mt-1 text-slate-700 dark:text-slate-300">{{ siteConfig.contact.hours }}</dd>
+                <dd class="mt-1 text-slate-700 dark:text-slate-300">{{ site.contact.hours }}</dd>
               </div>
             </dl>
           </div>

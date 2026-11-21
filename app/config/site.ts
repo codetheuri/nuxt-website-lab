@@ -15,7 +15,6 @@ export interface SiteConfig {
     name: string
     tagline: string
     description: string
-    logo: string
   }
   nav: NavItem[]
   footer: {
@@ -38,7 +37,6 @@ export const siteConfig: SiteConfig = {
     tagline: 'Building digital products that move the needle.',
     description:
       'We partner with ambitious brands to design, engineer, and scale high-converting web experiences.',
-    logo: '/logo.svg',
   },
 
   nav: [
