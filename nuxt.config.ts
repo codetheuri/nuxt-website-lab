@@ -12,6 +12,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    apiBaseUrl: 'http://vuelab-api:4000',
     public: {
       siteName: 'Acme Digital',
       siteUrl: 'http://localhost:3000',
